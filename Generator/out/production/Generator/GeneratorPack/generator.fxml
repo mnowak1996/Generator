@@ -110,7 +110,7 @@
                <content>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                      <children>
-                        <Label text="Podaj liczbe sekund">
+                        <Label text="Podaj czas  (sekundy)">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -122,12 +122,12 @@
                         </TextField>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                            <children>
-                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#minutnik" text="Start">
+                              <Button fx:id="Start" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#minutnik" text="Start">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Button>
-                              <Button lineSpacing="30.0" mnemonicParsing="false" onAction="#reset" text="Reset">
+                              <Button fx:id="Reset" lineSpacing="30.0" mnemonicParsing="false" onAction="#reset" text="Reset">
                                  <font>
                                     <Font size="18.0" />
                                  </font>

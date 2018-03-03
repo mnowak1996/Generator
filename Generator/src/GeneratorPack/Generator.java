@@ -1,5 +1,7 @@
 package GeneratorPack;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
@@ -34,6 +36,12 @@ public class Generator {
     private Label labelMinutnik;        // zmienna minutnika
     @FXML
     private ProgressBar progressMinutnik;    // zmienna minutnika
+    @FXML
+    private Button Start;
+    @FXML
+    private Button Stop;
+    @FXML
+    private Button Reset;
 
 
 
@@ -169,33 +177,63 @@ public class Generator {
 
 
     @FXML
-    private void minutnik() throws InterruptedException {
-        int podanaIloscSekund=0;
-        try{
-            podanaIloscSekund=Integer.parseInt(textMinutnik.getText());
-            if(podanaIloscSekund < 0)
-            {
-                throw new Exception();
-            }
-            for(int i = podanaIloscSekund; i > 0; i--)
-            {
-                Thread.sleep(1000);
-            }
-            progressMinutnik.setProgress(1.0 );
-            progressMinutnik.setEffect( new ColorAdjust(-1.0,0.0,0.0,0.0));
-            textMinutnik.setText(String.valueOf(0));
-            labelMinutnik.setText("Koniec!");
+    private void minutnik(ActionEvent event) throws InterruptedException {
+            Runnable task = new Runnable() {
+                @Override
+                public void run() {
+                    Start.setDisable(true);
+                    try {
+                        int liczbaSekund = Integer.parseInt(textMinutnik.getText());
+                        if (liczbaSekund != 0) {
+                            progressMinutnik.setProgress(1.0);
+                        }
+                        for (int i = liczbaSekund; i >= 0; i--) {
+                            Thread.sleep(1000);
+                            textMinutnik.setText(String.valueOf((i)));
+                            double licz = (double) i;
+                            if (licz / liczbaSekund == 0.0) {
+                                progressMinutnik.setProgress(0.0);
+                            } else {
+                                progressMinutnik.setProgress(licz / liczbaSekund);
+                            }
+                        }
 
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                labelMinutnik.setText("Koniec!");
+                                Reset.setDisable(false);
+                                Start.setDisable(false);
+                            }
+                        });
+                    } catch (Exception event) {
+                    }
+                }
+            };
+            try {
+                if(Integer.parseInt(textMinutnik.getText())<=0)
+                {
+                    throw new Exception();
+                }
+                else{
+                    new Thread(task).start();
+                }
 
-        }catch( Exception e ){
-           labelMinutnik.setText("Podałeś za małą lub za dużą liczbę");
+            } catch (Exception e) {
+                labelMinutnik.setText("Podałeś za małą lub za dużą liczbę");
+            }
         }
-    }
+
 
     @FXML
     private void reset(){
-        textMinutnik.setText(String.valueOf(10));
-        progressMinutnik.setProgress( 0 );
+        textMinutnik.setText("10");
+        progressMinutnik.setProgress( 1.0 );
         labelMinutnik.setText("");
+    }
+    @FXML
+    public void initialize(){
+        progressMinutnik.setProgress( 1.0 );
+        Reset.setDisable(true);
     }
 }
