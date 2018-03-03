@@ -37,11 +37,9 @@ public class Generator {
     @FXML
     private ProgressBar progressMinutnik;    // zmienna minutnika
     @FXML
-    private Button Start;
+    private Button Start;               // zmienna minutnika
     @FXML
-    private Button Stop;
-    @FXML
-    private Button Reset;
+    private Button Reset;               // zmienna minutnika
 
 
 
@@ -178,10 +176,10 @@ public class Generator {
 
     @FXML
     private void minutnik(ActionEvent event) throws InterruptedException {
-            Runnable task = new Runnable() {
+            Runnable task = new Runnable() {    // Tworzenie nowego watku działającego w tle
                 @Override
                 public void run() {
-                    Start.setDisable(true);
+                    Start.setDisable(true);     // przycisk start nieaktywny
                     try {
                         int liczbaSekund = Integer.parseInt(textMinutnik.getText());
                         if (liczbaSekund != 0) {
@@ -194,11 +192,11 @@ public class Generator {
                             if (licz / liczbaSekund == 0.0) {
                                 progressMinutnik.setProgress(0.0);
                             } else {
-                                progressMinutnik.setProgress(licz / liczbaSekund);
+                                progressMinutnik.setProgress(licz / liczbaSekund); // ładowanie paska
                             }
                         }
 
-                        Platform.runLater(new Runnable() {
+                        Platform.runLater(new Runnable() { // tworzenie wątku odpowiadającego za komunikację z GUI
                             @Override
                             public void run() {
                                 labelMinutnik.setText("Koniec!");
@@ -216,7 +214,7 @@ public class Generator {
                     throw new Exception();
                 }
                 else{
-                    new Thread(task).start();
+                    new Thread(task).start(); // uruchomienie nowego wątku
                 }
 
             } catch (Exception e) {
